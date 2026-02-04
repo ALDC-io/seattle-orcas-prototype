@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seattle Orcas | Federated Data</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #0a1628 0%, #1a2744 100%);
+            min-height: 100vh;
+            color: #e0e7ef;
+        }
+
+        .header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 180, 216, 0.2);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #00b4d8, #0077b6);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .logo-text h1 {
+            font-size: 1.5rem;
+            color: #00b4d8;
+        }
+
+        .logo-text span {
+            font-size: 0.8rem;
+            color: #8892a0;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        .header-nav a {
+            color: #8892a0;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .header-nav a:hover, .header-nav a.active {
+            color: #00b4d8;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 30px 40px;
+        }
+
+        .page-title {
+            margin-bottom: 30px;
+        }
+
+        .page-title h2 {
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .page-title p {
+            color: #8892a0;
+            font-size: 0.95rem;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 20px 30px;
+            border: 1px solid rgba(0, 180, 216, 0.1);
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #00b4d8;
+        }
+
+        .stat-card .label {
+            font-size: 0.85rem;
+            color: #8892a0;
+            margin-top: 5px;
+        }
+
+        /* Data Hub Visualization */
+        .data-hub {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(0, 180, 216, 0.1);
+            position: relative;
+            min-height: 500px;
+        }
+
+        .hub-center {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 180px;
+            height: 180px;
+            background: linear-gradient(135deg, #00b4d8, #0077b6);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            box-shadow: 0 0 60px rgba(0, 180, 216, 0.4);
+            animation: pulse-glow 3s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 60px rgba(0, 180, 216, 0.4); }
+            50% { box-shadow: 0 0 80px rgba(0, 180, 216, 0.6); }
+        }
+
+        .hub-center .icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .hub-center .title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .hub-center .subtitle {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Data Source Nodes */
+        .data-sources {
+            position: relative;
+            width: 100%;
+            height: 500px;
+        }
+
+        .data-node {
+            position: absolute;
+            width: 140px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 12px;
+            border: 2px solid rgba(0, 180, 216, 0.3);
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .data-node:hover {
+            border-color: #00b4d8;
+            transform: scale(1.05);
+            z-index: 20;
+        }
+
+        .data-node .node-icon {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+
+        .data-node .node-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .data-node .node-count {
+            font-size: 0.7rem;
+            color: #00d26a;
+        }
+
+        .data-node .node-freq {
+            font-size: 0.65rem;
+            color: #8892a0;
+            margin-top: 4px;
+        }
+
+        /* Color coding by category */
+        .data-node.player { border-color: rgba(0, 210, 106, 0.5); }
+        .data-node.player:hover { border-color: #00d26a; }
+        .data-node.fan { border-color: rgba(147, 51, 234, 0.5); }
+        .data-node.fan:hover { border-color: #9333ea; }
+        .data-node.operations { border-color: rgba(251, 191, 36, 0.5); }
+        .data-node.operations:hover { border-color: #fbbf24; }
+        .data-node.commercial { border-color: rgba(239, 68, 68, 0.5); }
+        .data-node.commercial:hover { border-color: #ef4444; }
+        .data-node.external { border-color: rgba(59, 130, 246, 0.5); }
+        .data-node.external:hover { border-color: #3b82f6; }
+
+        /* Connection Lines (SVG) */
+        .connections {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .connection-line {
+            stroke: rgba(0, 180, 216, 0.3);
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .connection-line.active {
+            stroke: #00b4d8;
+            stroke-width: 3;
+        }
+
+        /* Data Flow Animation */
+        .data-particle {
+            fill: #00b4d8;
+            animation: flow 2s linear infinite;
+        }
+
+        @keyframes flow {
+            0% { offset-distance: 0%; }
+            100% { offset-distance: 100%; }
+        }
+
+        /* Category Sections */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .category-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(0, 180, 216, 0.1);
+        }
+
+        .category-card h3 {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category-card.player h3 { color: #00d26a; }
+        .category-card.fan h3 { color: #9333ea; }
+        .category-card.operations h3 { color: #fbbf24; }
+        .category-card.commercial h3 { color: #ef4444; }
+        .category-card.external h3 { color: #3b82f6; }
+
+        .source-list {
+            list-style: none;
+        }
+
+        .source-list li {
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .source-list li:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .source-name {
+            color: #fff;
+        }
+
+        .source-meta {
+            text-align: right;
+        }
+
+        .source-meta .records {
+            font-size: 0.75rem;
+            color: #00d26a;
+        }
+
+        .source-meta .frequency {
+            font-size: 0.65rem;
+            color: #8892a0;
+        }
+
+        /* Data Flow Table */
+        .data-flow-section {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(0, 180, 216, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .data-flow-section h3 {
+            color: #00b4d8;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .flow-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .flow-table th, .flow-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .flow-table th {
+            color: #8892a0;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        .flow-table td {
+            font-size: 0.9rem;
+        }
+
+        .flow-table tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+        }
+
+        .status-badge.connected {
+            background: rgba(0, 210, 106, 0.15);
+            color: #00d26a;
+        }
+
+        .status-badge.pending {
+            background: rgba(251, 191, 36, 0.15);
+            color: #fbbf24;
+        }
+
+        .status-badge.planned {
+            background: rgba(139, 92, 246, 0.15);
+            color: #8b5cf6;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .category-tag {
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+        }
+
+        .category-tag.player { background: rgba(0, 210, 106, 0.2); color: #00d26a; }
+        .category-tag.fan { background: rgba(147, 51, 234, 0.2); color: #9333ea; }
+        .category-tag.operations { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
+        .category-tag.commercial { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+        .category-tag.external { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+
+        /* Zeus Integration Badge */
+        .zeus-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.2), rgba(79, 70, 229, 0.2));
+            border: 1px solid rgba(147, 51, 234, 0.3);
+            border-radius: 8px;
+            padding: 8px 15px;
+            font-size: 0.8rem;
+            color: #a78bfa;
+        }
+
+        .zeus-badge .dot {
+            width: 8px;
+            height: 8px;
+            background: #a78bfa;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Industry Benchmark Section */
+        .benchmark-section {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(0, 180, 216, 0.1);
+        }
+
+        .benchmark-section h3 {
+            color: #00b4d8;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .benchmark-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .benchmark-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .benchmark-card .org {
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .benchmark-card .platform {
+            font-size: 0.8rem;
+            color: #00b4d8;
+            margin-bottom: 10px;
+        }
+
+        .benchmark-card .scale {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00d26a;
+            margin-bottom: 5px;
+        }
+
+        .benchmark-card .scale-label {
+            font-size: 0.75rem;
+            color: #8892a0;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #8892a0;
+            font-size: 0.8rem;
+            border-top: 1px solid rgba(0, 180, 216, 0.1);
+            margin-top: 40px;
+        }
+
+        .footer a {
+            color: #00b4d8;
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .category-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .benchmark-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+            .benchmark-grid {
+                grid-template-columns: 1fr;
+            }
+            .data-hub {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">🔱</div>
+            <div class="logo-text">
+                <h1>Seattle Orcas</h1>
+                <span>Enterprise Intelligence</span>
+            </div>
+        </div>
+        <nav class="header-nav">
+            <a href="fan_engagement_dashboard.html">Fan Engagement</a>
+            <a href="enterprise_intelligence_demo.html">Enterprise Intelligence</a>
+            <a href="game_replay_animation.html">Game Replay</a>
+            <a href="federated_data.html" class="active">Federated Data</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="page-title">
+            <h2>Federated Data Sources</h2>
+            <p>Unified view of all data sources feeding the Seattle Orcas Enterprise Intelligence platform</p>
+            <div style="margin-top: 15px;">
+                <span class="zeus-badge">
+                    <span class="dot"></span>
+                    Zeus Memory - Unified Data Layer
+                </span>
+            </div>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="value">24</div>
+                <div class="label">Data Sources Connected</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">2.4M</div>
+                <div class="label">Records Processed Daily</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">5</div>
+                <div class="label">Data Categories</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">99.7%</div>
+                <div class="label">Data Quality Score</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">&lt;5min</div>
+                <div class="label">Avg Sync Latency</div>
+            </div>
+        </div>
+
+        <!-- Visual Data Hub -->
+        <div class="data-hub">
+            <svg class="connections" viewBox="0 0 1000 500">
+                <!-- Connection lines from center to nodes -->
+                <line class="connection-line" x1="500" y1="250" x2="100" y2="80" />
+                <line class="connection-line" x1="500" y1="250" x2="250" y2="60" />
+                <line class="connection-line" x1="500" y1="250" x2="400" y2="50" />
+                <line class="connection-line" x1="500" y1="250" x2="600" y2="50" />
+                <line class="connection-line" x1="500" y1="250" x2="750" y2="60" />
+                <line class="connection-line" x1="500" y1="250" x2="900" y2="80" />
+                <line class="connection-line" x1="500" y1="250" x2="950" y2="200" />
+                <line class="connection-line" x1="500" y1="250" x2="950" y2="300" />
+                <line class="connection-line" x1="500" y1="250" x2="900" y2="420" />
+                <line class="connection-line" x1="500" y1="250" x2="750" y2="440" />
+                <line class="connection-line" x1="500" y1="250" x2="600" y2="450" />
+                <line class="connection-line" x1="500" y1="250" x2="400" y2="450" />
+                <line class="connection-line" x1="500" y1="250" x2="250" y2="440" />
+                <line class="connection-line" x1="500" y1="250" x2="100" y2="420" />
+                <line class="connection-line" x1="500" y1="250" x2="50" y2="300" />
+                <line class="connection-line" x1="500" y1="250" x2="50" y2="200" />
+            </svg>
+
+            <div class="data-sources">
+                <!-- Center Hub -->
+                <div class="hub-center">
+                    <div class="icon">🧠</div>
+                    <div class="title">Zeus Memory</div>
+                    <div class="subtitle">Unified Data Layer</div>
+                </div>
+
+                <!-- Player Performance Data (Green) -->
+                <div class="data-node player" style="left: 5%; top: 5%;">
+                    <div class="node-icon">📊</div>
+                    <div class="node-title">MLC Stats</div>
+                    <div class="node-count">45K records</div>
+                    <div class="node-freq">Real-time</div>
+                </div>
+
+                <div class="data-node player" style="left: 20%; top: 0%;">
+                    <div class="node-icon">⌚</div>
+                    <div class="node-title">Wearables</div>
+                    <div class="node-count">890K metrics</div>
+                    <div class="node-freq">Daily</div>
+                </div>
+
+                <div class="data-node player" style="left: 35%; top: -2%;">
+                    <div class="node-icon">🏥</div>
+                    <div class="node-title">Medical</div>
+                    <div class="node-count">2.1K records</div>
+                    <div class="node-freq">As needed</div>
+                </div>
+
+                <!-- Fan Engagement Data (Purple) -->
+                <div class="data-node fan" style="left: 55%; top: -2%;">
+                    <div class="node-icon">📱</div>
+                    <div class="node-title">Mobile App</div>
+                    <div class="node-count">125K users</div>
+                    <div class="node-freq">Real-time</div>
+                </div>
+
+                <div class="data-node fan" style="left: 70%; top: 0%;">
+                    <div class="node-icon">🐦</div>
+                    <div class="node-title">Social APIs</div>
+                    <div class="node-count">847K mentions</div>
+                    <div class="node-freq">Hourly</div>
+                </div>
+
+                <div class="data-node fan" style="left: 85%; top: 5%;">
+                    <div class="node-icon">🎟️</div>
+                    <div class="node-title">Ticketing</div>
+                    <div class="node-count">156K transactions</div>
+                    <div class="node-freq">Real-time</div>
+                </div>
+
+                <!-- Right side -->
+                <div class="data-node fan" style="right: 0%; top: 35%;">
+                    <div class="node-icon">📧</div>
+                    <div class="node-title">Email/CRM</div>
+                    <div class="node-count">2.4M contacts</div>
+                    <div class="node-freq">Per campaign</div>
+                </div>
+
+                <div class="data-node operations" style="right: 0%; top: 55%;">
+                    <div class="node-icon">📍</div>
+                    <div class="node-title">WiFi/Beacon</div>
+                    <div class="node-count">45K sessions</div>
+                    <div class="node-freq">During events</div>
+                </div>
+
+                <!-- Bottom Right -->
+                <div class="data-node operations" style="left: 85%; bottom: 5%;">
+                    <div class="node-icon">🏟️</div>
+                    <div class="node-title">Venue Ops</div>
+                    <div class="node-count">12K work orders</div>
+                    <div class="node-freq">Per event</div>
+                </div>
+
+                <div class="data-node operations" style="left: 70%; bottom: 0%;">
+                    <div class="node-icon">👥</div>
+                    <div class="node-title">HR/Staffing</div>
+                    <div class="node-count">450 staff</div>
+                    <div class="node-freq">Weekly</div>
+                </div>
+
+                <!-- Bottom -->
+                <div class="data-node commercial" style="left: 55%; bottom: -2%;">
+                    <div class="node-icon">🤝</div>
+                    <div class="node-title">Sponsor CRM</div>
+                    <div class="node-count">24 partners</div>
+                    <div class="node-freq">Ongoing</div>
+                </div>
+
+                <div class="data-node commercial" style="left: 35%; bottom: -2%;">
+                    <div class="node-icon">📺</div>
+                    <div class="node-title">Media Tracking</div>
+                    <div class="node-count">1.2M impressions</div>
+                    <div class="node-freq">Per campaign</div>
+                </div>
+
+                <!-- Bottom Left -->
+                <div class="data-node commercial" style="left: 20%; bottom: 0%;">
+                    <div class="node-icon">🛍️</div>
+                    <div class="node-title">Merchandise</div>
+                    <div class="node-count">89K orders</div>
+                    <div class="node-freq">Real-time</div>
+                </div>
+
+                <div class="data-node external" style="left: 5%; bottom: 5%;">
+                    <div class="node-icon">🌤️</div>
+                    <div class="node-title">Weather API</div>
+                    <div class="node-count">365 forecasts</div>
+                    <div class="node-freq">Hourly</div>
+                </div>
+
+                <!-- Left side -->
+                <div class="data-node external" style="left: 0%; top: 55%;">
+                    <div class="node-icon">🏏</div>
+                    <div class="node-title">CricViz</div>
+                    <div class="node-count">50K data points</div>
+                    <div class="node-freq">Per match</div>
+                </div>
+
+                <div class="data-node external" style="left: 0%; top: 35%;">
+                    <div class="node-icon">💰</div>
+                    <div class="node-title">Finance/ERP</div>
+                    <div class="node-count">$8.2M tracked</div>
+                    <div class="node-freq">Daily</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Cards -->
+        <div class="category-grid">
+            <div class="category-card player">
+                <h3>🏏 Player Performance</h3>
+                <ul class="source-list">
+                    <li>
+                        <span class="source-name">MLC League Stats</span>
+                        <div class="source-meta">
+                            <div class="records">45K</div>
+                            <div class="frequency">Real-time</div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="source-name">Wearables/GPS</span>
+                        <div class="source-meta">
+                            <div class="records">890K</div>
+                            <div class="frequency">Daily</div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="source-name">Medical Records</span>
+                        <div class="source-meta">
+                            <div class="records">2.1K</div>
+                            <div class="frequency">As needed</div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="source-name">Training Sessions</span>
+                        <div class="source-meta">
+                            <div class="records">1.2K</div>
+                            <div class="frequency">Daily</div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="source-name">Scouting Reports</span>
+                        <div class="source-meta">
+                            <div class="records">340</div>
+                            <div class="frequency">Pre-match</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="category-card fan">
+                <h3>👥 Fan Engagement</h3>
+                <ul class="source-list">
+                    <li>
+                        <span class="source-name">Mobile App</span>
+                        <div class="source-meta">
+                            <div class="records">125K</div>
+                            <div class="frequency">Real-time</div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="source-name">Social Media APIs</span>
+                        <div class="source-meta">
+                            <div class="records">847K</div>
+                            <div class="frequency">Hourly</div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="source-name">Ticketing System</span>
+                        <div class="source-meta">
+                            <div class="records">156K</div>
+                            <div class="frequency">Real-time</div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="source-name">Email/CRM</span>
+                        <div class="source-meta">
+                            <div class="records">2.4M</div>
+                            <div class="frequency">Per campaign</div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="source-name">WiFi/Beacon Data</span>
+                        <div class="source-meta">
+                            <div class="records">45K</div>
+                            <div class="frequency">Events</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="category-card operations">
+                <h3>⚙️ Operations</h3>
+                <ul class="source-list">
+                    <li>
+                        <span class="source-name">Venue Management</span>
+                        <div class="source-meta">
+                            <div class="records">12K</div>
+                            <div class="frequency">Per event</div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="source-name">HR/Staffing</span>
+                        <div class="source-meta">
+                            <div class="records">450</div>
+                            <div class="frequency">Weekly</div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="source-name">Vendor Management</span>
+                        <div class="source-meta">
+                            <div class="records">89</div>
+                            <div class="frequency">Monthly</div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="source-name">Facility Systems</span>
+                        <div class="source-meta">
+                            <div class="records">5.2K</div>
+                            <div class="frequency">Real-time</div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="source-name">Community Programs</span>
+                        <div class="source-meta">
+                            <div class="records">2.8K</div>
+                            <div class="frequency">Weekly</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="category-card commercial">
+                <h3>💼 Commercial</h3>
+                <ul class="source-list">
+                    <li>
+                        <span class="source-name">Sponsor CRM</span>
+                        <div class="source-meta">
+                            <div class="records">24</div>
+                            <div class="frequency">Ongoing</div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="source-name">Media Tracking</span>
+                        <div class="source-meta">
+                            <div class="records">1.2M</div>
+                            <div class="frequency">Per campaign</div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="source-name">Merchandise POS</span>
+                        <div class="source-meta">
+                            <div class="records">89K</div>
+                            <div class="frequency">Real-time</div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="source-name">Finance/ERP</span>
+                        <div class="source-meta">
+                            <div class="records">$8.2M</div>
+                            <div class="frequency">Daily</div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="source-name">Activation Tracking</span>
+                        <div class="source-meta">
+                            <div class="records">156</div>
+                            <div class="frequency">Per event</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="category-card external">
+                <h3>🌐 External APIs</h3>
+                <ul class="source-list">
+                    <li>
+                        <span class="source-name">CricViz Analytics</span>
+                        <div class="source-meta">
+                            <div class="records">50K</div>
+                            <div class="frequency">Per match</div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="source-name">Weather API</span>
+                        <div class="source-meta">
+                            <div class="records">365</div>
+                            <div class="frequency">Hourly</div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="source-name">Census/Demo Data</span>
+                        <div class="source-meta">
+                            <div class="records">5.2M</div>
+                            <div class="frequency">Quarterly</div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="source-name">Market Research</span>
+                        <div class="source-meta">
+                            <div class="records">12</div>
+                            <div class="frequency">Annual</div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="source-name">Competitor Intel</span>
+                        <div class="source-meta">
+                            <div class="records">7 teams</div>
+                            <div class="frequency">Weekly</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Data Flow Table -->
+        <div class="data-flow-section">
+            <h3>Data Source Integration Status</h3>
+            <table class="flow-table">
+                <thead>
+                    <tr>
+                        <th>Source</th>
+                        <th>Category</th>
+                        <th>Provider/Platform</th>
+                        <th>Records</th>
+                        <th>Frequency</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>MLC League Statistics</td>
+                        <td><span class="category-tag player">Player</span></td>
+                        <td>Major League Cricket API</td>
+                        <td>45,230</td>
+                        <td>Real-time</td>
+                        <td><span class="status-badge connected"><span class="status-dot"></span>Connected</span></td>
+                    </tr>
+                    <tr>
+                        <td>Player Wearables</td>
+                        <td><span class="category-tag player">Player</span></td>
+                        <td>Catapult Sports</td>
+                        <td>890,450</td>
+                        <td>Daily</td>
+                        <td><span class="status-badge connected"><span class="status-dot"></span>Connected</span></td>
+                    </tr>
+                    <tr>
+                        <td>Mobile App Analytics</td>
+                        <td><span class="category-tag fan">Fan</span></td>
+                        <td>Custom + Firebase</td>
+                        <td>125,000</td>
+                        <td>Real-time</td>
+                        <td><span class="status-badge connected"><span class="status-dot"></span>Connected</span></td>
+                    </tr>
+                    <tr>
+                        <td>Social Media</td>
+                        <td><span class="category-tag fan">Fan</span></td>
+                        <td>Twitter, Instagram, TikTok APIs</td>
+                        <td>847,000</td>
+                        <td>Hourly</td>
+                        <td><span class="status-badge connected"><span class="status-dot"></span>Connected</span></td>
+                    </tr>
+                    <tr>
+                        <td>Ticketing System</td>
+                        <td><span class="category-tag fan">Fan</span></td>
+                        <td>Ticketmaster</td>
+                        <td>156,890</td>
+                        <td>Real-time</td>
+                        <td><span class="status-badge connected"><span class="status-dot"></span>Connected</span></td>
+                    </tr>
+                    <tr>
+                        <td>Email/CRM Platform</td>
+                        <td><span class="category-tag fan">Fan</span></td>
+                        <td>Salesforce Marketing Cloud</td>
+                        <td>2,400,000</td>
+                        <td>Per campaign</td>
+                        <td><span class="status-badge connected"><span class="status-dot"></span>Connected</span></td>
+                    </tr>
+                    <tr>
+                        <td>Sponsor Management</td>
+                        <td><span class="category-tag commercial">Commercial</span></td>
+                        <td>KORE Software</td>
+                        <td>24</td>
+                        <td>Ongoing</td>
+                        <td><span class="status-badge connected"><span class="status-dot"></span>Connected</span></td>
+                    </tr>
+                    <tr>
+                        <td>Merchandise POS</td>
+                        <td><span class="category-tag commercial">Commercial</span></td>
+                        <td>Shopify + Square</td>
+                        <td>89,450</td>
+                        <td>Real-time</td>
+                        <td><span class="status-badge connected"><span class="status-dot"></span>Connected</span></td>
+                    </tr>
+                    <tr>
+                        <td>CricViz Advanced Analytics</td>
+                        <td><span class="category-tag external">External</span></td>
+                        <td>CricViz API</td>
+                        <td>50,000</td>
+                        <td>Per match</td>
+                        <td><span class="status-badge connected"><span class="status-dot"></span>Connected</span></td>
+                    </tr>
+                    <tr>
+                        <td>In-Stadium WiFi Analytics</td>
+                        <td><span class="category-tag operations">Operations</span></td>
+                        <td>Cisco DNA Spaces</td>
+                        <td>45,000</td>
+                        <td>During events</td>
+                        <td><span class="status-badge pending"><span class="status-dot"></span>Pending</span></td>
+                    </tr>
+                    <tr>
+                        <td>Video Analysis Platform</td>
+                        <td><span class="category-tag player">Player</span></td>
+                        <td>Hudl</td>
+                        <td>2,400</td>
+                        <td>Per match</td>
+                        <td><span class="status-badge pending"><span class="status-dot"></span>Pending</span></td>
+                    </tr>
+                    <tr>
+                        <td>Fan Sentiment AI</td>
+                        <td><span class="category-tag fan">Fan</span></td>
+                        <td>Custom NLP Model</td>
+                        <td>500,000</td>
+                        <td>Real-time</td>
+                        <td><span class="status-badge planned"><span class="status-dot"></span>Planned</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Industry Benchmarks -->
+        <div class="benchmark-section">
+            <h3>Industry Benchmarks - World-Class Sports Organizations</h3>
+            <div class="benchmark-grid">
+                <div class="benchmark-card">
+                    <div class="org">NFL</div>
+                    <div class="platform">AWS Cloud Ecosystem</div>
+                    <div class="scale">90B+</div>
+                    <div class="scale-label">Daily fan attributes processed</div>
+                </div>
+                <div class="benchmark-card">
+                    <div class="org">NBA</div>
+                    <div class="platform">Microsoft Azure + AI</div>
+                    <div class="scale">50M+</div>
+                    <div class="scale-label">Data points per game</div>
+                </div>
+                <div class="benchmark-card">
+                    <div class="org">Manchester City</div>
+                    <div class="platform">SAP Sports One</div>
+                    <div class="scale">10+ Years</div>
+                    <div class="scale-label">Historical game data unified</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>Seattle Orcas Federated Data | Powered by <a href="#">ALDC Enterprise Intelligence</a> & <a href="#">Zeus Memory</a></p>
+        <p style="margin-top: 5px;">Prototype for demonstration purposes | Data is illustrative</p>
+    </footer>
+
+    <script>
+        // Add hover effects to connection lines
+        document.querySelectorAll('.data-node').forEach(node => {
+            node.addEventListener('mouseenter', () => {
+                node.style.zIndex = '20';
+            });
+            node.addEventListener('mouseleave', () => {
+                node.style.zIndex = '1';
+            });
+        });
+
+        // Animate stats on load
+        function animateValue(element, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const value = Math.floor(progress * (end - start) + start);
+                if (element.textContent.includes('M')) {
+                    element.textContent = (value / 10).toFixed(1) + 'M';
+                } else if (element.textContent.includes('%')) {
+                    element.textContent = value + '%';
+                } else if (element.textContent.includes('min')) {
+                    element.textContent = '<5min';
+                } else {
+                    element.textContent = value.toLocaleString();
+                }
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // Initialize animations when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            // Stats are static for demo, but could be animated
+            console.log('Federated Data visualization loaded');
+        });
+    </script>
+</body>
+</html>
