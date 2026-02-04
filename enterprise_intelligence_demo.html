@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seattle Orcas | Enterprise Intelligence</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #0a1628 0%, #1a2744 100%);
+            min-height: 100vh;
+            color: #e0e7ef;
+        }
+
+        .header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 180, 216, 0.2);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #00b4d8, #0077b6);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .logo-text h1 {
+            font-size: 1.5rem;
+            color: #00b4d8;
+        }
+
+        .logo-text span {
+            font-size: 0.8rem;
+            color: #8892a0;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        .header-nav a {
+            color: #8892a0;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .header-nav a:hover, .header-nav a.active {
+            color: #00b4d8;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 30px 40px;
+        }
+
+        .page-title {
+            margin-bottom: 30px;
+        }
+
+        .page-title h2 {
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .page-title p {
+            color: #8892a0;
+            font-size: 0.95rem;
+        }
+
+        /* Virtuous Cycle Visualization */
+        .virtuous-cycle {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(0, 180, 216, 0.1);
+        }
+
+        .cycle-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .cycle-header h3 {
+            color: #00b4d8;
+            font-size: 1.2rem;
+        }
+
+        .cycle-stats {
+            display: flex;
+            gap: 30px;
+        }
+
+        .cycle-stat {
+            text-align: center;
+        }
+
+        .cycle-stat .value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00d26a;
+        }
+
+        .cycle-stat .label {
+            font-size: 0.75rem;
+            color: #8892a0;
+        }
+
+        .cycle-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .cycle-node {
+            background: rgba(0, 180, 216, 0.1);
+            border: 2px solid rgba(0, 180, 216, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            width: 150px;
+            transition: all 0.3s;
+        }
+
+        .cycle-node:hover {
+            border-color: #00b4d8;
+            transform: translateY(-5px);
+        }
+
+        .cycle-node .icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .cycle-node .title {
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .cycle-node .desc {
+            font-size: 0.75rem;
+            color: #8892a0;
+        }
+
+        .cycle-arrow {
+            font-size: 1.5rem;
+            color: #00b4d8;
+        }
+
+        /* Decision Grid */
+        .decision-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .decision-log {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(0, 180, 216, 0.1);
+        }
+
+        .decision-log h3 {
+            color: #00b4d8;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .decision-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-left: 4px solid #00b4d8;
+            transition: all 0.3s;
+        }
+
+        .decision-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .decision-item.success {
+            border-left-color: #00d26a;
+        }
+
+        .decision-item.failure {
+            border-left-color: #ff6b6b;
+        }
+
+        .decision-item.pending {
+            border-left-color: #ffd93d;
+        }
+
+        .decision-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .decision-title {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .decision-category {
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: rgba(0, 180, 216, 0.2);
+            color: #00b4d8;
+        }
+
+        .decision-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.8rem;
+            color: #8892a0;
+            margin-bottom: 8px;
+        }
+
+        .decision-outcome {
+            font-size: 0.85rem;
+            color: #a0a8b0;
+        }
+
+        .decision-outcome strong {
+            color: #00d26a;
+        }
+
+        .decision-outcome strong.negative {
+            color: #ff6b6b;
+        }
+
+        /* Pattern Recognition */
+        .pattern-panel {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(0, 180, 216, 0.1);
+        }
+
+        .pattern-panel h3 {
+            color: #00b4d8;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .pattern-item {
+            background: rgba(0, 210, 106, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(0, 210, 106, 0.2);
+        }
+
+        .pattern-title {
+            font-weight: 600;
+            color: #00d26a;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pattern-title .icon {
+            font-size: 1rem;
+        }
+
+        .pattern-desc {
+            font-size: 0.85rem;
+            color: #a0a8b0;
+            margin-bottom: 10px;
+        }
+
+        .pattern-evidence {
+            font-size: 0.75rem;
+            color: #8892a0;
+        }
+
+        .pattern-evidence strong {
+            color: #00b4d8;
+        }
+
+        /* Recommendations */
+        .recommendations {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(0, 180, 216, 0.1);
+        }
+
+        .recommendations h3 {
+            color: #00b4d8;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .rec-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .rec-card {
+            background: linear-gradient(135deg, rgba(0, 180, 216, 0.15), rgba(0, 119, 182, 0.1));
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(0, 180, 216, 0.2);
+            transition: all 0.3s;
+        }
+
+        .rec-card:hover {
+            transform: translateY(-5px);
+            border-color: #00b4d8;
+        }
+
+        .rec-card .category {
+            font-size: 0.7rem;
+            color: #00b4d8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .rec-card .title {
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .rec-card .rationale {
+            font-size: 0.85rem;
+            color: #a0a8b0;
+            margin-bottom: 15px;
+        }
+
+        .rec-card .confidence {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .confidence-bar {
+            flex: 1;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00b4d8, #00d26a);
+            border-radius: 3px;
+        }
+
+        .confidence-value {
+            font-size: 0.8rem;
+            color: #00d26a;
+            font-weight: 600;
+        }
+
+        /* ROI Attribution */
+        .roi-section {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            padding: 25px;
+            margin-top: 30px;
+            border: 1px solid rgba(0, 180, 216, 0.1);
+        }
+
+        .roi-section h3 {
+            color: #00b4d8;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .roi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .roi-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .roi-card .sponsor {
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .roi-card .tier {
+            font-size: 0.7rem;
+            color: #8892a0;
+            margin-bottom: 15px;
+        }
+
+        .roi-card .value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #00d26a;
+            margin-bottom: 5px;
+        }
+
+        .roi-card .label {
+            font-size: 0.75rem;
+            color: #8892a0;
+        }
+
+        .roi-card .delivered {
+            margin-top: 15px;
+            font-size: 0.8rem;
+            color: #a0a8b0;
+        }
+
+        .roi-card .delivered strong {
+            color: #00b4d8;
+        }
+
+        /* Zeus Integration Badge */
+        .zeus-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.2), rgba(79, 70, 229, 0.2));
+            border: 1px solid rgba(147, 51, 234, 0.3);
+            border-radius: 8px;
+            padding: 8px 15px;
+            font-size: 0.8rem;
+            color: #a78bfa;
+        }
+
+        .zeus-badge .dot {
+            width: 8px;
+            height: 8px;
+            background: #a78bfa;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #8892a0;
+            font-size: 0.8rem;
+            border-top: 1px solid rgba(0, 180, 216, 0.1);
+            margin-top: 40px;
+        }
+
+        .footer a {
+            color: #00b4d8;
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .decision-grid {
+                grid-template-columns: 1fr;
+            }
+            .rec-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .roi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            .rec-grid {
+                grid-template-columns: 1fr;
+            }
+            .roi-grid {
+                grid-template-columns: 1fr;
+            }
+            .cycle-diagram {
+                flex-direction: column;
+            }
+            .cycle-arrow {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">🔱</div>
+            <div class="logo-text">
+                <h1>Seattle Orcas</h1>
+                <span>Enterprise Intelligence</span>
+            </div>
+        </div>
+        <nav class="header-nav">
+            <a href="fan_engagement_dashboard.html">Fan Engagement</a>
+            <a href="enterprise_intelligence_demo.html" class="active">Enterprise Intelligence</a>
+            <a href="game_replay_animation.html">Game Replay</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="page-title">
+            <h2>Enterprise Intelligence</h2>
+            <p>Decision tracking, pattern recognition, and AI-powered recommendations</p>
+            <div style="margin-top: 15px;">
+                <span class="zeus-badge">
+                    <span class="dot"></span>
+                    Zeus Memory Connected
+                </span>
+            </div>
+        </div>
+
+        <!-- Virtuous Cycle Visualization -->
+        <div class="virtuous-cycle">
+            <div class="cycle-header">
+                <h3>The Virtuous Cycle of Intelligence</h3>
+                <div class="cycle-stats">
+                    <div class="cycle-stat">
+                        <div class="value">847</div>
+                        <div class="label">Decisions Tracked</div>
+                    </div>
+                    <div class="cycle-stat">
+                        <div class="value">73%</div>
+                        <div class="label">Success Rate</div>
+                    </div>
+                    <div class="cycle-stat">
+                        <div class="value">156</div>
+                        <div class="label">Patterns Found</div>
+                    </div>
+                </div>
+            </div>
+            <div class="cycle-diagram">
+                <div class="cycle-node">
+                    <div class="icon">📊</div>
+                    <div class="title">Federate</div>
+                    <div class="desc">Unify data from all sources</div>
+                </div>
+                <div class="cycle-arrow">→</div>
+                <div class="cycle-node">
+                    <div class="icon">🎯</div>
+                    <div class="title">Decide</div>
+                    <div class="desc">Make informed choices</div>
+                </div>
+                <div class="cycle-arrow">→</div>
+                <div class="cycle-node">
+                    <div class="icon">📈</div>
+                    <div class="title">Track</div>
+                    <div class="desc">Log outcomes & learnings</div>
+                </div>
+                <div class="cycle-arrow">→</div>
+                <div class="cycle-node">
+                    <div class="icon">🧠</div>
+                    <div class="title">Learn</div>
+                    <div class="desc">AI finds patterns</div>
+                </div>
+                <div class="cycle-arrow">→</div>
+                <div class="cycle-node">
+                    <div class="icon">💡</div>
+                    <div class="title">Improve</div>
+                    <div class="desc">Better decisions next time</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Decision Log & Patterns -->
+        <div class="decision-grid">
+            <div class="decision-log">
+                <h3>Decision Log - Recent Activity</h3>
+
+                <div class="decision-item success">
+                    <div class="decision-header">
+                        <div class="decision-title">Hetmyer "Power Hour" Social Campaign</div>
+                        <span class="decision-category">Marketing</span>
+                    </div>
+                    <div class="decision-meta">
+                        <span>Jan 28, 2026</span>
+                        <span>Fan Engagement</span>
+                    </div>
+                    <div class="decision-outcome">
+                        <strong>+340% engagement</strong> vs. baseline. TikTok reels featuring Hetmyer's biggest sixes drove 2.1M impressions.
+                    </div>
+                </div>
+
+                <div class="decision-item success">
+                    <div class="decision-header">
+                        <div class="decision-title">Early Bird Season Ticket Pricing</div>
+                        <span class="decision-category">Revenue</span>
+                    </div>
+                    <div class="decision-meta">
+                        <span>Jan 15, 2026</span>
+                        <span>Ticketing</span>
+                    </div>
+                    <div class="decision-outcome">
+                        <strong>23% increase</strong> in season ticket renewals. 15% discount tier drove urgency.
+                    </div>
+                </div>
+
+                <div class="decision-item failure">
+                    <div class="decision-header">
+                        <div class="decision-title">Saturday Afternoon Game Scheduling</div>
+                        <span class="decision-category">Operations</span>
+                    </div>
+                    <div class="decision-meta">
+                        <span>Jan 10, 2026</span>
+                        <span>Stadium Ops</span>
+                    </div>
+                    <div class="decision-outcome">
+                        <strong class="negative">-18% attendance</strong> vs. evening games. Family demographic prefers evening for weekend outings.
+                    </div>
+                </div>
+
+                <div class="decision-item success">
+                    <div class="decision-header">
+                        <div class="decision-title">Warner Meet & Greet - Premium Tier</div>
+                        <span class="decision-category">Sponsor Activation</span>
+                    </div>
+                    <div class="decision-meta">
+                        <span>Jan 5, 2026</span>
+                        <span>Sponsorship</span>
+                    </div>
+                    <div class="decision-outcome">
+                        <strong>$45K revenue</strong> from 50 premium tickets. UST sponsor integration successful.
+                    </div>
+                </div>
+
+                <div class="decision-item pending">
+                    <div class="decision-header">
+                        <div class="decision-title">Youth Academy Partnership - Seattle Schools</div>
+                        <span class="decision-category">Community</span>
+                    </div>
+                    <div class="decision-meta">
+                        <span>Feb 1, 2026</span>
+                        <span>Development</span>
+                    </div>
+                    <div class="decision-outcome">
+                        Pilot program launching. Expected <strong>500+ youth registrations</strong> in first quarter.
+                    </div>
+                </div>
+
+                <div class="decision-item success">
+                    <div class="decision-header">
+                        <div class="decision-title">Farooqi/McCoy Pace Duo Branding</div>
+                        <span class="decision-category">Marketing</span>
+                    </div>
+                    <div class="decision-meta">
+                        <span>Dec 20, 2025</span>
+                        <span>Brand</span>
+                    </div>
+                    <div class="decision-outcome">
+                        <strong>"Left Arm Terror" merch</strong> sold out in 48 hours. $28K revenue, 89% margin.
+                    </div>
+                </div>
+            </div>
+
+            <div class="pattern-panel">
+                <h3>Patterns Detected by Zeus</h3>
+
+                <div class="pattern-item">
+                    <div class="pattern-title">
+                        <span class="icon">📈</span>
+                        Star Player Content = 3x Engagement
+                    </div>
+                    <div class="pattern-desc">
+                        Content featuring Warner, Klaasen, or Hetmyer consistently outperforms team-branded content.
+                    </div>
+                    <div class="pattern-evidence">
+                        Evidence: <strong>47 campaigns</strong> analyzed, R² = 0.89
+                    </div>
+                </div>
+
+                <div class="pattern-item">
+                    <div class="pattern-title">
+                        <span class="icon">🎯</span>
+                        Evening Games Drive 2.1x Revenue
+                    </div>
+                    <div class="pattern-desc">
+                        7 PM starts generate higher F&B spend and merch purchases vs. afternoon games.
+                    </div>
+                    <div class="pattern-evidence">
+                        Evidence: <strong>12 matches</strong> compared, p < 0.01
+                    </div>
+                </div>
+
+                <div class="pattern-item">
+                    <div class="pattern-title">
+                        <span class="icon">🤝</span>
+                        Tech Sponsors Prefer Data Storytelling
+                    </div>
+                    <div class="pattern-desc">
+                        UST, Veeam respond positively to analytics-driven sponsorship reports.
+                    </div>
+                    <div class="pattern-evidence">
+                        Evidence: <strong>4 renewals</strong> with data-first approach
+                    </div>
+                </div>
+
+                <div class="pattern-item">
+                    <div class="pattern-title">
+                        <span class="icon">🏏</span>
+                        Win Streak = Ticket Surge (+48hrs)
+                    </div>
+                    <div class="pattern-desc">
+                        Ticket sales spike 24-48 hours after wins, especially dramatic victories.
+                    </div>
+                    <div class="pattern-evidence">
+                        Evidence: <strong>8 win events</strong> tracked, avg +34% sales
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Recommendations -->
+        <div class="recommendations">
+            <h3>AI-Powered Recommendations</h3>
+            <div class="rec-grid">
+                <div class="rec-card">
+                    <div class="category">Marketing</div>
+                    <div class="title">Launch "Road to Finals" Documentary Series</div>
+                    <div class="rationale">
+                        Behind-the-scenes content drives 4.2x engagement. Leverage star player access before season starts.
+                    </div>
+                    <div class="confidence">
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: 87%;"></div>
+                        </div>
+                        <span class="confidence-value">87%</span>
+                    </div>
+                </div>
+
+                <div class="rec-card">
+                    <div class="category">Revenue</div>
+                    <div class="title">Bundle Merch with Premium Tickets</div>
+                    <div class="rationale">
+                        Analysis shows 67% of premium ticket buyers also purchase merch. Bundle increases AOV by $45.
+                    </div>
+                    <div class="confidence">
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: 92%;"></div>
+                        </div>
+                        <span class="confidence-value">92%</span>
+                    </div>
+                </div>
+
+                <div class="rec-card">
+                    <div class="category">Sponsorship</div>
+                    <div class="title">Pitch Klaasen to Microsoft (Keeping Academy)</div>
+                    <div class="rationale">
+                        Microsoft's youth STEM programs align with Klaasen's mentorship of development keepers. Natural fit.
+                    </div>
+                    <div class="confidence">
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: 78%;"></div>
+                        </div>
+                        <span class="confidence-value">78%</span>
+                    </div>
+                </div>
+
+                <div class="rec-card">
+                    <div class="category">Operations</div>
+                    <div class="title">Move Remaining Sat Games to 6 PM</div>
+                    <div class="rationale">
+                        Data shows 18% attendance drop for 2 PM Saturday games. Evening slot recovers lost revenue.
+                    </div>
+                    <div class="confidence">
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: 94%;"></div>
+                        </div>
+                        <span class="confidence-value">94%</span>
+                    </div>
+                </div>
+
+                <div class="rec-card">
+                    <div class="category">Community</div>
+                    <div class="title">Partner with Eastside Youth Cricket League</div>
+                    <div class="rationale">
+                        Redmond/Bellevue has 12K+ youth cricket players. Untapped family demographic within 10mi of venue.
+                    </div>
+                    <div class="confidence">
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: 81%;"></div>
+                        </div>
+                        <span class="confidence-value">81%</span>
+                    </div>
+                </div>
+
+                <div class="rec-card">
+                    <div class="category">Fan Engagement</div>
+                    <div class="title">Launch Player Prediction Game in App</div>
+                    <div class="rationale">
+                        Gamification increases app DAU by 3.2x. Fantasy-style predictions tie to sponsor activations.
+                    </div>
+                    <div class="confidence">
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: 85%;"></div>
+                        </div>
+                        <span class="confidence-value">85%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sponsor ROI Attribution -->
+        <div class="roi-section">
+            <h3>Sponsor ROI Attribution</h3>
+            <div class="roi-grid">
+                <div class="roi-card">
+                    <div class="sponsor">UST Global</div>
+                    <div class="tier">Principal Partner</div>
+                    <div class="value">3.2x</div>
+                    <div class="label">ROI Multiple</div>
+                    <div class="delivered">
+                        <strong>$2.4M</strong> value delivered vs. $750K contract
+                    </div>
+                </div>
+
+                <div class="roi-card">
+                    <div class="sponsor">Veeam</div>
+                    <div class="tier">Jersey Partner</div>
+                    <div class="value">2.8x</div>
+                    <div class="label">ROI Multiple</div>
+                    <div class="delivered">
+                        <strong>$1.4M</strong> value delivered vs. $500K contract
+                    </div>
+                </div>
+
+                <div class="roi-card">
+                    <div class="sponsor">BlockDAG</div>
+                    <div class="tier">Digital Partner</div>
+                    <div class="value">4.1x</div>
+                    <div class="label">ROI Multiple</div>
+                    <div class="delivered">
+                        <strong>$820K</strong> value delivered vs. $200K contract
+                    </div>
+                </div>
+
+                <div class="roi-card">
+                    <div class="sponsor">Community Bank</div>
+                    <div class="tier">Community Partner</div>
+                    <div class="value">2.4x</div>
+                    <div class="label">ROI Multiple</div>
+                    <div class="delivered">
+                        <strong>$360K</strong> value delivered vs. $150K contract
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>Seattle Orcas Enterprise Intelligence Demo | Powered by <a href="#">ALDC Enterprise Intelligence</a></p>
+        <p style="margin-top: 5px;">Prototype for demonstration purposes | Data is illustrative</p>
+    </footer>
+</body>
+</html>
