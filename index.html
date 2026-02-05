@@ -88,15 +88,47 @@
             color: #00d4aa;
             text-decoration: none;
         }
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 12px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 212, 170, 0.2);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        .site-header a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        .site-header img {
+            height: 40px;
+            transition: opacity 0.3s;
+        }
+        .site-header a:hover img {
+            opacity: 0.8;
+        }
+        .main-content {
+            padding-top: 80px;
+        }
     </style>
 </head>
 <body>
+    <header class="site-header">
+        <a href="https://aldc.io" target="_blank" rel="noopener noreferrer">
+            <img src="https://www.aldc.io/_next/static/media/analytic-labs1.e195a58e.svg" alt="Analytic Labs - Click to visit aldc.io">
+        </a>
+    </header>
+    <div class="main-content">
     <div class="logo">🐋</div>
     <h1>Seattle Orcas</h1>
     <p class="subtitle">Enterprise Intelligence Platform</p>
-    <div style="margin-top: 20px;">
-        <img src="https://www.aldc.io/_next/static/media/analytic-labs1.e195a58e.svg" alt="Analytic Labs" style="height: 50px;">
-    </div>
 
     <div class="demos">
         <a href="enterprise_intelligence_demo.html" class="demo-card">
@@ -122,7 +154,8 @@
     </div>
 
     <footer>
-        Powered by <a href="https://analyticlabs.io">Analytic Labs</a> | ALDC Enterprise Intelligence
+        Powered by <a href="https://aldc.io">Analytic Labs</a> | ALDC Enterprise Intelligence
     </footer>
+    </div>
 </body>
 </html>

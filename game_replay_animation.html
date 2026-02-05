@@ -562,6 +562,14 @@
             text-decoration: none;
         }
 
+        .aldc-logo {
+            height: 36px;
+            transition: opacity 0.3s;
+        }
+        .aldc-logo:hover {
+            opacity: 0.8;
+        }
+
         /* Responsive */
         @media (max-width: 1200px) {
             .live-score {
@@ -603,7 +611,9 @@
                 <span>Game Replay</span>
             </div>
             <div style="margin-left: 20px; padding-left: 20px; border-left: 1px solid rgba(255,255,255,0.2);">
-                <img src="https://www.aldc.io/_next/static/media/analytic-labs1.e195a58e.svg" alt="Analytic Labs" style="height: 40px;">
+                <a href="https://aldc.io" target="_blank" rel="noopener noreferrer">
+                    <img src="https://www.aldc.io/_next/static/media/analytic-labs1.e195a58e.svg" alt="Analytic Labs" class="aldc-logo">
+                </a>
             </div>
         </div>
         <nav class="header-nav">
