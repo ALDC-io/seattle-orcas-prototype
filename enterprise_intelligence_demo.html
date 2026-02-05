@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seattle Orcas | Enterprise Intelligence</title>
+    <title>Enterprise Intelligence</title>
     <style>
         * {
             margin: 0;
@@ -22,9 +22,26 @@
             background: rgba(0, 0, 0, 0.3);
             padding: 20px 40px;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             border-bottom: 1px solid rgba(0, 180, 216, 0.2);
+        }
+
+        .header-top {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 180, 216, 0.1);
+            margin-bottom: 15px;
+        }
+
+        .header-bottom {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
         }
 
         .logo {
@@ -536,22 +553,22 @@
 </head>
 <body>
     <header class="header">
-        <a href="https://aldc.io" target="_blank" rel="noopener noreferrer">
-            <img src="https://www.aldc.io/_next/static/media/analytic-labs1.e195a58e.svg" alt="Analytic Labs" class="aldc-logo">
-        </a>
-        <div class="logo">
-            <div class="logo-icon"><img src="https://www.seattleorcas.com/static-assets/images/so-logo.svg" alt="Seattle Orcas"></div>
-            <div class="logo-text">
-                <h1>Seattle Orcas</h1>
-                <span>Enterprise Intelligence</span>
-            </div>
+        <div class="header-top">
+            <a href="https://aldc.io" target="_blank" rel="noopener noreferrer">
+                <img src="https://www.aldc.io/_next/static/media/analytic-labs1.e195a58e.svg" alt="Analytic Labs" class="aldc-logo">
+            </a>
         </div>
-        <nav class="header-nav">
-            <a href="fan_engagement_dashboard.html">Fan Engagement</a>
-            <a href="enterprise_intelligence_demo.html" class="active">Enterprise Intelligence</a>
-            <a href="game_replay_animation.html">Game Replay</a>
-            <a href="federated_data.html">Federated Data</a>
-        </nav>
+        <div class="header-bottom">
+            <div class="logo">
+                <div class="logo-icon"><img src="https://www.seattleorcas.com/static-assets/images/so-logo.svg" alt="Logo"></div>
+            </div>
+            <nav class="header-nav">
+                <a href="fan_engagement_dashboard.html">Fan Engagement</a>
+                <a href="enterprise_intelligence_demo.html" class="active">Enterprise Intelligence</a>
+                <a href="game_replay_animation.html">Game Replay</a>
+                <a href="federated_data.html">Federated Data</a>
+            </nav>
+        </div>
     </header>
 
     <div class="container">
@@ -903,7 +920,7 @@
     </div>
 
     <footer class="footer">
-        <p>Seattle Orcas Enterprise Intelligence Demo | Powered by <a href="#">ALDC Enterprise Intelligence</a></p>
+        <p>Enterprise Intelligence Demo | Powered by <a href="https://aldc.io">ALDC Enterprise Intelligence</a></p>
         <p style="margin-top: 5px;">Prototype for demonstration purposes | Data is illustrative</p>
     </footer>
 </body>
