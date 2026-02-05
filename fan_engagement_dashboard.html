@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seattle Orcas - Fan Engagement Dashboard</title>
+    <title>Fan Engagement Dashboard</title>
     <style>
         * {
             margin: 0;
@@ -22,46 +22,44 @@
             background: rgba(0,0,0,0.3);
             padding: 20px 40px;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .header-top {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 212, 170, 0.1);
+            margin-bottom: 15px;
+        }
+
+        .header-middle {
+            width: 100%;
+            display: flex;
+            justify-content: center;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 15px;
+            justify-content: center;
         }
 
         .logo-icon {
-            width: 50px;
-            height: 50px;
+            width: 100px;
+            height: 100px;
         }
         .logo-icon img {
-            width: 50px;
-            height: 50px;
+            width: 100px;
+            height: 100px;
             object-fit: contain;
         }
 
-        .logo-text h1 {
-            font-size: 24px;
-            font-weight: 700;
-            color: #00d4aa;
-        }
-
-        .logo-text span {
-            font-size: 12px;
-            color: #94a3b8;
-        }
-
-        .header-meta {
-            text-align: right;
-            color: #94a3b8;
-            font-size: 14px;
-        }
-
         .aldc-logo {
-            height: 36px;
+            height: 48px;
             transition: opacity 0.3s;
         }
         .aldc-logo:hover {
@@ -439,22 +437,16 @@
 </head>
 <body>
     <header class="header">
-        <a href="https://aldc.io" target="_blank" rel="noopener noreferrer">
-            <img src="https://www.aldc.io/_next/static/media/analytic-labs1.e195a58e.svg" alt="Analytic Labs" class="aldc-logo">
-        </a>
-        <div class="logo">
-            <div class="logo-icon"><img src="https://www.seattleorcas.com/static-assets/images/so-logo.svg" alt="Seattle Orcas"></div>
-            <div class="logo-text">
-                <h1>Seattle Orcas</h1>
-                <span>Fan Engagement Intelligence</span>
+        <div class="header-top">
+            <a href="https://aldc.io" target="_blank" rel="noopener noreferrer">
+                <img src="https://www.aldc.io/_next/static/media/analytic-labs1.e195a58e.svg" alt="Analytic Labs" class="aldc-logo">
+            </a>
+        </div>
+        <div class="header-middle">
+            <div class="logo">
+                <div class="logo-icon"><img src="https://www.seattleorcas.com/static-assets/images/so-logo.svg" alt="Logo"></div>
             </div>
         </div>
-        <nav class="header-nav" style="display: flex; gap: 30px;">
-            <a href="fan_engagement_dashboard.html" style="color: #00d4aa; text-decoration: none; font-size: 0.9rem;">Fan Engagement</a>
-            <a href="enterprise_intelligence_demo.html" style="color: #94a3b8; text-decoration: none; font-size: 0.9rem;">Enterprise Intelligence</a>
-            <a href="game_replay_animation.html" style="color: #94a3b8; text-decoration: none; font-size: 0.9rem;">Game Replay</a>
-            <a href="federated_data.html" style="color: #94a3b8; text-decoration: none; font-size: 0.9rem;">Federated Data</a>
-        </nav>
     </header>
 
     <div class="container">

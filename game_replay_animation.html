@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seattle Orcas | Game Replay</title>
+    <title>Game Replay</title>
     <style>
         * {
             margin: 0;
@@ -22,51 +22,48 @@
             background: rgba(0, 0, 0, 0.3);
             padding: 20px 40px;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             border-bottom: 1px solid rgba(0, 180, 216, 0.2);
+        }
+
+        .header-top {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 180, 216, 0.1);
+            margin-bottom: 15px;
+        }
+
+        .header-middle {
+            width: 100%;
+            display: flex;
+            justify-content: center;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 15px;
+            justify-content: center;
         }
 
         .logo-icon {
-            width: 50px;
-            height: 50px;
+            width: 100px;
+            height: 100px;
         }
         .logo-icon img {
-            width: 50px;
-            height: 50px;
+            width: 100px;
+            height: 100px;
             object-fit: contain;
         }
 
-        .logo-text h1 {
-            font-size: 1.5rem;
-            color: #00b4d8;
+        .aldc-logo {
+            height: 48px;
+            transition: opacity 0.3s;
         }
-
-        .logo-text span {
-            font-size: 0.8rem;
-            color: #8892a0;
-        }
-
-        .header-nav {
-            display: flex;
-            gap: 30px;
-        }
-
-        .header-nav a {
-            color: #8892a0;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.3s;
-        }
-
-        .header-nav a:hover, .header-nav a.active {
-            color: #00b4d8;
+        .aldc-logo:hover {
+            opacity: 0.8;
         }
 
         .container {
@@ -610,22 +607,16 @@
 </head>
 <body>
     <header class="header">
-        <a href="https://aldc.io" target="_blank" rel="noopener noreferrer">
-            <img src="https://www.aldc.io/_next/static/media/analytic-labs1.e195a58e.svg" alt="Analytic Labs" class="aldc-logo">
-        </a>
-        <div class="logo">
-            <div class="logo-icon"><img src="https://www.seattleorcas.com/static-assets/images/so-logo.svg" alt="Seattle Orcas"></div>
-            <div class="logo-text">
-                <h1>Seattle Orcas</h1>
-                <span>Game Replay</span>
+        <div class="header-top">
+            <a href="https://aldc.io" target="_blank" rel="noopener noreferrer">
+                <img src="https://www.aldc.io/_next/static/media/analytic-labs1.e195a58e.svg" alt="Analytic Labs" class="aldc-logo">
+            </a>
+        </div>
+        <div class="header-middle">
+            <div class="logo">
+                <div class="logo-icon"><img src="https://www.seattleorcas.com/static-assets/images/so-logo.svg" alt="Logo"></div>
             </div>
         </div>
-        <nav class="header-nav">
-            <a href="fan_engagement_dashboard.html">Fan Engagement</a>
-            <a href="enterprise_intelligence_demo.html">Enterprise Intelligence</a>
-            <a href="game_replay_animation.html" class="active">Game Replay</a>
-            <a href="federated_data.html">Federated Data</a>
-        </nav>
     </header>
 
     <!-- Live Score Widget -->
