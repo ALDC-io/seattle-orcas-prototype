@@ -170,11 +170,12 @@
             color: rgba(255, 255, 255, 0.8);
         }
 
-        /* Data Source Nodes */
+        /* Data Source Nodes - must be ABOVE connection lines */
         .data-sources {
             position: relative;
             width: 100%;
             height: 500px;
+            z-index: 2;
         }
 
         .data-node {
@@ -187,6 +188,7 @@
             text-align: center;
             transition: all 0.3s;
             cursor: pointer;
+            z-index: 10;
         }
 
         .data-node:hover {
@@ -230,7 +232,7 @@
         .data-node.external { border-color: rgba(59, 130, 246, 0.5); }
         .data-node.external:hover { border-color: #3b82f6; }
 
-        /* Connection Lines (SVG) */
+        /* Connection Lines (SVG) - must be BEHIND data nodes */
         .connections {
             position: absolute;
             top: 0;
@@ -238,6 +240,7 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
+            z-index: 0;
         }
 
         .connection-line {
@@ -586,25 +589,7 @@
 
         <!-- Visual Data Hub -->
         <div class="data-hub">
-            <svg class="connections" viewBox="0 0 1000 500">
-                <!-- Connection lines from center to nodes -->
-                <line class="connection-line" x1="500" y1="250" x2="100" y2="80" />
-                <line class="connection-line" x1="500" y1="250" x2="250" y2="60" />
-                <line class="connection-line" x1="500" y1="250" x2="400" y2="50" />
-                <line class="connection-line" x1="500" y1="250" x2="600" y2="50" />
-                <line class="connection-line" x1="500" y1="250" x2="750" y2="60" />
-                <line class="connection-line" x1="500" y1="250" x2="900" y2="80" />
-                <line class="connection-line" x1="500" y1="250" x2="950" y2="200" />
-                <line class="connection-line" x1="500" y1="250" x2="950" y2="300" />
-                <line class="connection-line" x1="500" y1="250" x2="900" y2="420" />
-                <line class="connection-line" x1="500" y1="250" x2="750" y2="440" />
-                <line class="connection-line" x1="500" y1="250" x2="600" y2="450" />
-                <line class="connection-line" x1="500" y1="250" x2="400" y2="450" />
-                <line class="connection-line" x1="500" y1="250" x2="250" y2="440" />
-                <line class="connection-line" x1="500" y1="250" x2="100" y2="420" />
-                <line class="connection-line" x1="500" y1="250" x2="50" y2="300" />
-                <line class="connection-line" x1="500" y1="250" x2="50" y2="200" />
-            </svg>
+            <!-- Connection lines removed for cleaner look -->
 
             <div class="data-sources">
                 <!-- Center Hub -->
