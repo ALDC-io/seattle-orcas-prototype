@@ -36,27 +36,35 @@
             margin-bottom: 15px;
         }
 
+        .header-middle {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 180, 216, 0.1);
+            margin-bottom: 15px;
+        }
+
         .header-bottom {
             width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 40px;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 15px;
+            justify-content: center;
         }
 
         .logo-icon {
-            width: 50px;
-            height: 50px;
+            width: 100px;
+            height: 100px;
         }
         .logo-icon img {
-            width: 50px;
-            height: 50px;
+            width: 100px;
+            height: 100px;
             object-fit: contain;
         }
 
@@ -558,10 +566,12 @@
                 <img src="https://www.aldc.io/_next/static/media/analytic-labs1.e195a58e.svg" alt="Analytic Labs" class="aldc-logo">
             </a>
         </div>
-        <div class="header-bottom">
+        <div class="header-middle">
             <div class="logo">
                 <div class="logo-icon"><img src="https://www.seattleorcas.com/static-assets/images/so-logo.svg" alt="Logo"></div>
             </div>
+        </div>
+        <div class="header-bottom">
             <nav class="header-nav">
                 <a href="fan_engagement_dashboard.html">Fan Engagement</a>
                 <a href="enterprise_intelligence_demo.html" class="active">Enterprise Intelligence</a>
